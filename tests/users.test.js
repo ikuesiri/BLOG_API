@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
 const request = require('supertest');
 const app = require('../app');
-
-
 require("dotenv").config();
 
 
@@ -26,7 +24,7 @@ describe("Auth : Register", () => {
             .set('content-type', 'application/json')
                 .send({ 
             
-                        first_name: 'Pete',
+            first_name: 'Pete',
             last_name: 'Dave',
             email: 'pdave@gmail.com',
             password: '123456'
@@ -46,21 +44,21 @@ describe("Auth : Register", () => {
 });
 
 
-describe("Auth : Login", () => {
+// describe("Auth : Login", () => {
 
-    it('should signin a user', async () => {
-    const res = await request(app).post("/api/v1/auth/login")
-    .set('content-type', 'application/json')
-        .send({ 
+//     it('should signin a user', async () => {
+//     const res = await request(app).post("/api/v1/auth/login")
+//     .set('content-type', 'application/json')
+//         .send({ 
 
-            email: 'pdave@gmail.com',
-            password: '123456'
-        })
+//             email: 'pdave@gmail.com',
+//             password: '123456'
+//         })
       
-        expect(res.statusCode).toBe(200);
+//         expect(res.statusCode).toBe(200);
         
            
 
-  })
+//   })
 
-});
+// });

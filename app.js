@@ -10,9 +10,9 @@ const  articleRouter = require('./route/articlesRoute');
 
 
 
-//middleware to grab post/patch requests as json files
+//middleware to grab post/patch requests as json files or other files
 app.use(express.json())
-// app.use(express.urlencoded({extended : true}))
+app.use(express.urlencoded({extended : true}))
 
 
 

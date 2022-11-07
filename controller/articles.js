@@ -35,7 +35,7 @@ const createArticle = async (req, res) =>{
           
           
             const article = await newArticle.save()
-            es.status(201).json({status : true,  article });
+            res.status(201).json({status : true,  article });
           
    } catch (error) {
       res.status(500).json({success : false, message: error})
@@ -56,7 +56,7 @@ const getAllArticles= async(req, res) =>{
          const { author, title, tags, sort } = req.query;
 
          const findQuery = { 
-            state : "published"
+            // state : "published"
              //This 'hard coded line ensures on 'published' are displayed on this route
          };
       
