@@ -1,5 +1,5 @@
 # BLOG_API 
-This is an RESTful API for an article Blog App
+This is a RESTful API for an article Blog App
 
 ## Requirements
 1. All Users should be able to register 
