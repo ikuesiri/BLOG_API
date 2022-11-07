@@ -21,7 +21,7 @@ describe("Auth : Register", () => {
     
       it('should signup a user', async () => {
             const res = await request(app).post("/api/v1/auth/register")
-            // .set('content-type', 'application/json')
+            .set('content-type', 'application/json')
                 .send({ 
             
             first_name: 'john',
@@ -43,7 +43,7 @@ describe("Auth : Register", () => {
     
     it('should signin a user', async () => {
         const res = await request(app).post("/api/v1/auth/login")
-        // .set('content-type', 'application/json')
+        .set('content-type', 'application/json')
         .send({ 
             
             email: 'johndave1@gmail.com',

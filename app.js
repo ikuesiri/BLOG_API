@@ -21,7 +21,12 @@ app.use('/api/v1/auth', authUser )
 
 //home page
 app.get('/',(req, res) =>{
-    res.json({success : true, message : `Welcome to AltSchool  Blog Page`})
+    res.send({
+        success : true,
+         message : "Welcome to AltSchool  Blog Page ",
+         
+         "Article route" :  "/api/v1/articles" 
+        })
 })
 
 //app middleware to the blog route

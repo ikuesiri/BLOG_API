@@ -28,3 +28,18 @@ describe("GET /api/v1/articles", () => {
   });
 });
 
+
+
+//Test for route to get all published Articles
+
+describe("GET /api/v1/articles", () => {
+  it("should return all published articles", async () => {
+    const res = await request(app).post("/api/v1/articles/new");
+    expect(res.statusCode).toBe(200);
+    expect(res.body).toHaveProperty('status', true)
+    expect(res.body).toHaveProperty('article');
+    expect(res.body).toHaveProperty('count');
+
+  });
+});
+
