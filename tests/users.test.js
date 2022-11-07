@@ -21,44 +21,46 @@ describe("Auth : Register", () => {
     
       it('should signup a user', async () => {
             const res = await request(app).post("/api/v1/auth/register")
-            .set('content-type', 'application/json')
+            // .set('content-type', 'application/json')
                 .send({ 
             
-            first_name: 'Pete',
+            first_name: 'john',
             last_name: 'Dave',
-            email: 'pdave@gmail.com',
+            email: 'johndave1@gmail.com',
             password: '123456'
         })
 
         expect(res.statusCode).toBe(201);
         expect(res.body).toHaveProperty('message'),
         expect(res.body).toHaveProperty('user')
-        expect(res.body.user).toHaveProperty('first_name', 'pete')
+        expect(res.body.user).toHaveProperty('first_name', 'john')
         expect(res.body.user).toHaveProperty('last_name', 'dave')
         //expect lowercase for the names, since the scema contains 'lowercase : true'
-
-
+        
+        
+    })
+    
+    
+    it('should signin a user', async () => {
+        const res = await request(app).post("/api/v1/auth/login")
+        // .set('content-type', 'application/json')
+        .send({ 
+            
+            email: 'johndave1@gmail.com',
+            password: '123456'
+        })
+        
+        expect(res.statusCode).toBe(200);
+        expect(res.body).toHaveProperty('message'),
+        expect(res.body).toHaveProperty('user')
+        
+         
+  
   })
-
-
 });
 
 
 // describe("Auth : Login", () => {
 
-//     it('should signin a user', async () => {
-//     const res = await request(app).post("/api/v1/auth/login")
-//     .set('content-type', 'application/json')
-//         .send({ 
-
-//             email: 'pdave@gmail.com',
-//             password: '123456'
-//         })
-      
-//         expect(res.statusCode).toBe(200);
-        
-           
-
-//   })
 
 // });
