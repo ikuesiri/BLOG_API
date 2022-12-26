@@ -29,7 +29,7 @@ app.get('/',(req, res) =>{
         })
 })
 
-//app middleware to the blog route
+//app middleware to the blog article route
 app.use('/api/v1/articles', articleRouter)
 
 

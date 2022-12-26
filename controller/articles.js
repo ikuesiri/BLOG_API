@@ -5,13 +5,13 @@ const ArticleModel = require("../models/articles");
 
 const createArticle = async (req, res) =>{
 
-     //grabs the user's id from the token
+     //grabs the user's id from the token in the JWT authorization middleware
      req.body.author = req.user.userID;
 
 
-   //  creating a function too calculate the reading time
+   //  creating a function to calculate the reading time
       const calcReadingTime = (text) => {
-      const wordPerMinute = 200  //assumes that it takes 200 words to read/min
+      const wordPerMinute = 200  //assumes that it takes 200 words to read/min (ref: google)
       const numOfWords = text.split(/\s/g).length //uses regex to count words by white-spaces, newlines 
       const mins = (numOfWords/ wordPerMinute) * 1
       const readTime = Math.ceil(mins) //aprox. to the next whole Number
@@ -35,11 +35,10 @@ const createArticle = async (req, res) =>{
           
           
             const article = await newArticle.save()
-            res.status(201).json({status : true,  article });
+            return res.status(201).json({status : true,  article });
           
    } catch (error) {
-      res.status(500).json({success : false, message: error})
-      
+      res.status(500).json({status : false, message : error.message}) 
    }
   
 }
@@ -80,7 +79,7 @@ const getAllArticles= async(req, res) =>{
          if(sort){
             const sortListItems = sort.split(',').join(' ');
             result = result.sort(sortListItems) 
-            //dynamically sorts the list with different available items
+            //this dynamically sorts the list with different available items
          }else{
          
             result = result.sort('-read_count ,reading_time, -created_at')
@@ -108,10 +107,10 @@ const getAllArticles= async(req, res) =>{
          })
       
           const article = await result
-         res.status(200).json({ status : true, article, count : article.length})
+         return res.status(200).json({ status : true, article, count : article.length})
       
    } catch (error) {
-    res.status(500).json({status : false, error}) 
+    res.status(500).json({status : false, message : error.message}) 
  }
 }
 
@@ -125,14 +124,18 @@ const getAllArticles= async(req, res) =>{
       const page = Number(req.query.page)   || 1    //page 1:default
       const limit = Number(req.query.limit) || 10    //10 per page
       const skip = (page - 1) * limit    
-      
-      const article = await ArticleModel
-      .find({author : req.user.userID})
-      .sort('-state')
-      .skip(skip)
-      .limit(limit)
-
-      res.status(200).json({status : true, article, count: article.length})
+      try {
+         const article = await ArticleModel
+         .find({author : req.user.userID})
+         .sort('-state')
+         .skip(skip)
+         .limit(limit)
+   
+         return res.status(200).json({status : true, article, count: article.length})
+      } catch (error) {
+         res.status(500).json({status : false, message : error.message})
+      }
+     
    }
    
 
@@ -166,8 +169,8 @@ const getArticle = async(req, res) =>{
       return res.status(200).json({success : true , article  })
 
 
-    } catch (error) {
-      res.status(500).json({status : false, error})    
+    } catch (error) { 
+      res.status(500).json({status : false, message : error.message})
     }
  
 }
@@ -175,17 +178,15 @@ const getArticle = async(req, res) =>{
 
 //Editing or Updating an article
 const updateArticle = async(req, res) =>{
-   
-     
+    
            //grabs the user's id from token
       req.body.author  = req.user.userID; 
 
-      const {blogID} = req.params; 
-      const body = req.body;
-      
+      const { blogID } = req.params; 
+      const { body }= req;
 
       if(body ===" "){
-         throw new Error('fields canot be left empty')
+         throw new Error('fields cannot be left empty')
       }
       try {
       
@@ -202,7 +203,7 @@ const updateArticle = async(req, res) =>{
       res.status(200).json({success : true, article })
 
    } catch (error) {
-      res.status(500).json({success : false, error})
+      res.status(500).json({status : false, message : error.message})
    }
 }
 
@@ -225,7 +226,7 @@ try {
       
       res.status(200).json({success : true, message :`Successful! Your Article has been Deleted!`})
    } catch (error) {
-      res.status(500).json({status : false, error})
+      res.status(500).json({status : false, message : error.message})
 
       
    }

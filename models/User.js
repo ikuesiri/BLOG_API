@@ -53,7 +53,7 @@ UserSchema.pre('save', async function(next) {
 })
 
 
-//mongoose schema method to generate a token when a user logs in successfully
+//mongoose schema method to generate a token when a user  registers or logs in successfully
 UserSchema.methods.generateJWT = function () {
    return jwt.sign({userID : this._id, email : this.email, first_name : this.first_name, last_name : this.last_name },
       JWT_SECRET,

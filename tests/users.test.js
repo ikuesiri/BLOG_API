@@ -18,9 +18,9 @@ afterEach(async () => {
 //Test for route to get all published Articles
 
 describe("Auth : Register", () => {
-    
       it('should signup a user', async () => {
-            const res = await request(app).post("/api/v1/auth/register")
+            const res = await request(app)
+            .post("/api/v1/auth/register")
             .set('content-type', 'application/json')
                 .send({ 
             

@@ -25,9 +25,8 @@ const registerUser = async(req, res) =>{
                last_name : last_name,
                email : email,
                password : password //nb: mongoose userSchema pre-hook already handled the password encryption
-        
-           })
-        
+           })   
+           const token = user.generateJWT() //called this function from the userSchma mongoose method
            await user.save()
         
        res.status(201).json({
@@ -36,13 +35,12 @@ const registerUser = async(req, res) =>{
            user:{
                id : user._id,
                first_name : user.first_name,
-               last_name : user.last_name
-           }
-            
+               last_name : user.last_name,
+               token
+           }        
        })
     } catch (error) {
-       return res.status(500).send(error)
-       
+       res.status(500).json({ message : error.message })
     }
 }
 
@@ -80,7 +78,7 @@ const loginUser = async(req, res) =>{
          })
 
     } catch (error) {
-        res.status(500).json({ error })
+        res.status(500).json({ message : error.message })
     }
 }
 
