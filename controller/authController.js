@@ -82,9 +82,77 @@ const loginUser = async(req, res) =>{
     }
 }
 
+//function for users to edit/update their user Account
 
+const updateUser = async(req , res) =>{
+        //grabs the user's id from token
+        const userID  = req.user.userID;
+        const { first_name, last_name, email, password } = req.body;
+
+        try {
+            if(userID !== req.params.userID){
+                return res.status(401).json({messsage : 'Unauthorized'})
+             }
+     
+        const user = await UserModel.findOne( { _id: userID })
+
+            if(!user ) {
+                return res.status(401).json({messsage : 'Unauthorized'})
+            }
+
+                user.first_name = first_name
+                user.last_name = last_name
+                user.email = email
+                user.password = password
+                
+            await user.save()
+            return res.status(200).json(
+                {success : true,
+                 message : `Your account has been updated successfully`, 
+                 user: {
+                    first_name : user.first_name,
+                    last_name : user.last_name,
+                    userID : user._id,
+                    email : user.email,
+                    password : user.password
+                    
+                    }
+                })
+            
+        } catch (error) {
+            res.status(500).json({status : false, message : error.message})
+        }
+
+}
+
+
+//Delete user account\
+const deleteUser = async (req, res) => {
+      //grabs the user's id from token
+      const userID  = req.user.userID;
+
+    try {
+        if(userID !== req.params.userID){
+            return res.status(401).json({messsage : 'Unauthorized'})
+         }
+
+        const user = await UserModel.findOne({ _id : userID})
+
+        if(!user) {
+            return res.status(401).json({messsage : 'Unauthorized'})
+         }
+
+         await user.delete()
+        return res.status(200).json({ success : true, message: `Your account has been successfully deleted`})
+
+    } catch (error) {
+        res.status(500).json({status : false, message : error.message})   
+    }
+}
 
 module.exports = {
     registerUser,
-    loginUser
+    loginUser,
+    updateUser,
+    deleteUser
 }
