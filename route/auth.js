@@ -1,6 +1,7 @@
 const express =require('express');
+const userValidator = require('../validators/auth.validator')
 const {
-    registerUser, 
+    registerUser,
     loginUser,
     updateUser,
     deleteUser,
@@ -12,10 +13,12 @@ const authRoute = express.Router()
 const authenticateUser = require('../utils/authMiddelware')
 
 //register a new user
-authRoute.post('/register', registerUser )
+//'userValidator' - from Joi package to add extra validator to user registration
+// authRoute.post('/register', registerUser )
+authRoute.post('/register', userValidator, registerUser )
 
 //sign in a registered user
-authRoute.post('/login' , loginUser )
+authRoute.post('/login', loginUser )
 
 authRoute.patch('/update/:userID', authenticateUser, updateUser )
 

@@ -6,16 +6,16 @@ const UserModel = require('../models/User');
 
 const registerUser = async(req, res) =>{
     const {first_name, last_name, email, password} = req.body;
-    
+
     if(!first_name|| !last_name || !email || !password){
-           
+
            return res.status(400).json({ message : `Please Enter all required fields`})
        }
-       
+
     try {
        //check if the potential new User's email already exist
        const emailAlreadyExist = await UserModel.findOne({ email });
-       
+
        if(emailAlreadyExist){
            return res.status(401).json({msg : `This email '${email}' already exist... try a different email`})
         }
@@ -25,10 +25,10 @@ const registerUser = async(req, res) =>{
                last_name : last_name,
                email : email,
                password : password //nb: mongoose userSchema pre-hook already handled the password encryption
-           })   
+           })
            const token = user.generateJWT() //called this function from the userSchma mongoose method
            await user.save()
-        
+
        res.status(201).json({
            success : true,
            message : 'Registration Completed!!!',
@@ -37,7 +37,7 @@ const registerUser = async(req, res) =>{
                first_name : user.first_name,
                last_name : user.last_name,
                token
-           }        
+           }
        })
     } catch (error) {
        res.status(500).json({ message : error.message })
@@ -45,7 +45,7 @@ const registerUser = async(req, res) =>{
 }
 
 
-//signin ~ login 
+//signin ~ login
 
 const loginUser = async(req, res) =>{
     try {
@@ -59,7 +59,7 @@ const loginUser = async(req, res) =>{
         if(!user){
             return res.status(401).json({message : `Invalid Credentials`})
         }
-     
+
         const validate = await user.isValidPassword(password);
 
         if(!validate){
@@ -93,7 +93,7 @@ const updateUser = async(req , res) =>{
             if(userID !== req.params.userID){
                 return res.status(401).json({messsage : 'Unauthorized'})
              }
-     
+
         const user = await UserModel.findOne( { _id: userID })
 
             if(!user ) {
@@ -104,21 +104,21 @@ const updateUser = async(req , res) =>{
                 user.last_name = last_name
                 user.email = email
                 user.password = password
-                
+
             await user.save()
             return res.status(200).json(
                 {success : true,
-                 message : `Your account has been updated successfully`, 
+                 message : `Your account has been updated successfully`,
                  user: {
                     first_name : user.first_name,
                     last_name : user.last_name,
                     userID : user._id,
                     email : user.email,
                     password : user.password
-                    
+
                     }
                 })
-            
+
         } catch (error) {
             res.status(500).json({status : false, message : error.message})
         }
@@ -146,7 +146,7 @@ const deleteUser = async (req, res) => {
         return res.status(200).json({ success : true, message: `Your account has been successfully deleted`})
 
     } catch (error) {
-        res.status(500).json({status : false, message : error.message})   
+        res.status(500).json({status : false, message : error.message})
     }
 }
 
