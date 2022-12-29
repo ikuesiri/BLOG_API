@@ -1,0 +1,2 @@
+{"contentLength":"16473","level":"info","message":"HTTP Access log","method":"GET","responseTime":null,"status":200,"timestamp":"Thu Dec 29 2022 12:20:44 GMT+0100 (West Africa Standard Time)","url":"/api/v1/articles"}
+{"level":"info","message":"Server listening at Port: 3000"}

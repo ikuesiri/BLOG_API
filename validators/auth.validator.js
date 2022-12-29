@@ -43,15 +43,9 @@ const userValidator = async (req, res, next) => {
       // message: validationResult.error
       // this function helps to format joi error message into a simple to read message
       joiErrorFormatter(error)
-
-      // errors : [validationResult.error.details[0].message]
-
-      // formData: req.body
     )
   }
   next()
-
-// return res.send(validateResult)
 }
 
 module.exports = userValidator

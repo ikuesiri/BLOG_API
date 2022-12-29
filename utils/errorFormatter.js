@@ -7,7 +7,6 @@ const joiErrorFormatter = (errorMessage) => {
   details.forEach(value => {
     errors[value.path] = [value.message]
     //  console.log(errors[value.path])
-
   });
 
 
